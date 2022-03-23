@@ -28,13 +28,23 @@ start = dt.datetime(startyear, startmonth, startday)
 now = dt.datetime.now()
 
 root = Tk()
-filePath=r"D:\10_Projects\03_Python_Finance\Scalable_List.xlsx"
+filePath=r"D:\10_Projects\03_Python_Finance\Reduced_Watchlist.xlsx"
 stocklist = pd.read_excel(filePath)
 
 buy_alerted = False
 sell_alerted = False
 buy_date=0
 sell_date=0
+buy_list=[]
+sell_list=[]
+record_sell_date = 0
+record_buy_date = 0
+
+def clear_buy_sell_list():
+    if now.day > record_buy_date:
+        buy_list.clear()
+    if now.day > record_sell_date:
+        sell_list.clear()
 
 while 1:
     for i in stocklist.index: #Runs this loop through stock list file
@@ -165,13 +175,20 @@ while 1:
             print(message)
             msg.set_content(message)
 
-            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-                smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-                smtp.send_message(msg)
-                del msg['Subject']
-                del msg['From']
-                del msg['To']
-                print("completed")
+            if stock in buy_list:
+                print("do not send email alert email again")
+                print()
+            else:
+                with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+                    smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+                    smtp.send_message(msg)
+                    buy_list.append(stock)
+                    record_buy_date = buy_date.day
+                    print("completed")
+                    print()
+            del msg['Subject']
+            del msg['From']
+            del msg['To']
 
         elif (sell_date.day == now.day and sell_date.month==now.month and sell_date.year==now.year and sell_alerted==False):
             msg['Subject'] = 'Sell alert on ' + stock+'!'
@@ -186,16 +203,24 @@ while 1:
             print(message)
             msg.set_content(message)
 
-            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-                smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-                smtp.send_message(msg)
-                del msg['Subject']
-                del msg['From']
-                del msg['To']
-                print("completed")
+            if stock in sell_list:
+                print("do not send sell alert email again")
+                print()
+            else:
+                with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+                    smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+                    smtp.send_message(msg)
+                    sell_list.append(stock)
+                    record_sell_date = sell_date.day
+                    print("completed")
+                    print()
+            del msg['Subject']
+            del msg['From']
+            del msg['To']
 
         else:
             print("No new alerts")
+            print()
 
     time.sleep(60)
-
+    clear_buy_sell_list()
