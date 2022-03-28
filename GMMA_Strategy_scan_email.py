@@ -20,21 +20,21 @@ EMAIL_PASSWORD = 'lmujshzzwjmhbrfa'
 
 msg = EmailMessage()
 
-startyear = 2019
-startmonth = 1
-startday = 1
+startyear = 2022
+startmonth = 3
+startday = 20
 
 start = dt.datetime(startyear, startmonth, startday)
 now = dt.datetime.now()
 
 root = Tk()
-filePath=r"D:\10_Projects\03_Python_Finance\Reduced_Watchlist.xlsx"
+filePath=r"D:\10_Projects\03_Python_Finance\Full_Watchlist.xlsx"
 stocklist = pd.read_excel(filePath)
 
 buy_alerted = False
 sell_alerted = False
-buy_date=0
-sell_date=0
+buy_date=dt.datetime(2022, 3, 20)
+sell_date=dt.datetime(2022, 3, 20)
 buy_list=[]
 sell_list=[]
 record_sell_date = 0

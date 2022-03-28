@@ -27,7 +27,7 @@ while stock != "quit": #Runs this loop until user enters 'quit' (can do many sto
         df["EMA_"+str(ema)] = round(df.iloc[:,
                                             4].ewm(span=ema, adjust=False).mean(), 2)
 
-    print(df.tail())
+    print(stock)
     print()
 
     pos = 0
