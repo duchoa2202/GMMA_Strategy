@@ -20,9 +20,9 @@ EMAIL_PASSWORD = 'lmujshzzwjmhbrfa'
 
 msg = EmailMessage()
 
-startyear = 2022
-startmonth = 3
-startday = 20
+startyear = 2019
+startmonth = 1
+startday = 1
 
 start = dt.datetime(startyear, startmonth, startday)
 now = dt.datetime.now()
