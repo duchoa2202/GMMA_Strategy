@@ -28,8 +28,12 @@ start = dt.datetime(startyear, startmonth, startday)
 now = dt.datetime.now()
 
 root = Tk()
-filePath=r"D:\10_Projects\03_Python_Finance\Full_Watchlist.xlsx"
-stocklist = pd.read_excel(filePath)
+
+# filePath=r"D:\10_Projects\03_Python_Finance\Full_Watchlist.xlsx"
+# stocklist = pd.read_excel(filePath)
+
+sheet_id = '1dTJ8h4t4JtPv450U2x-PeXsQFjBPd5ME'
+stocklist = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv")
 
 buy_alerted = False
 sell_alerted = False
@@ -39,11 +43,12 @@ buy_list=[]
 sell_list=[]
 record_sell_date = 0
 record_buy_date = 0
+minute_delay = 0
 
 def clear_buy_sell_list():
-    if now.day > record_buy_date:
+    if now.day != record_buy_date:
         buy_list.clear()
-    if now.day > record_sell_date:
+    if now.day != record_sell_date:
         sell_list.clear()
 
 while 1:
@@ -223,4 +228,8 @@ while 1:
             print()
 
     time.sleep(60)
+    minute_delay+=1
+    if(minute_delay == 300):
+        stocklist = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv")
+        minute_delay = 0
     clear_buy_sell_list()
